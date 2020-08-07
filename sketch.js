@@ -38,15 +38,17 @@ function draw() {
     stroke(255)
     let scalar = particles[i].scalar - speedScalar
     const y = scalar < 500 ? map(scalar, blackholeRadius, 500, blackholeRadius/2, 0) : 0
-    const x = cos(particles[i].a) * particles[i].scalar
-    const z = sin(particles[i].a) * .35 * particles[i].scalar + y
+    let x = cos(particles[i].a) * particles[i].scalar
+    let z = sin(particles[i].a) * .35 * particles[i].scalar + y
     strokeWeight(map(z, -600, 600, 1, 5))
     if(z > 50 || dist(x,z,0,blackholeRadius/2)>blackholeRadius) {
       line(x,z,particles[i].previous.x,particles[i].previous.y)
     }
     if(scalar <= blackholeRadius) {
-      scalar = dist(int(random(-1500, 1500)),int(random(-1500, 1500)),0,0)
-      const a = random(TWO_PI)
+      x = int(random(-1500, 1500))
+      z = int(random(-1500, 1500))
+      scalar = dist(x,z,0,0)
+      const a = atan2(z, x)
       particles[i] = {
         a,
         scalar,
@@ -63,7 +65,6 @@ function draw() {
 }
 
 function keyPressed(key) {
-  console.log(key)
   if(key.keyCode === 80)
-    saveCanvas(canvas, 'random_walk_color', 'png')
+    save()
 }
